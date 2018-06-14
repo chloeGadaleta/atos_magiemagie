@@ -35,7 +35,6 @@ public class Partie implements Serializable {
     @Column (nullable = false)
     private String nom;
 
-
     public String getNom() {
         return nom;
     }
