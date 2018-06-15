@@ -5,6 +5,7 @@
  */
 package atos.magieMagie.Dao;
 
+import atos.magieMagie.Entity.Joueur;
 import atos.magieMagie.Entity.Partie;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -18,10 +19,47 @@ import javax.persistence.Query;
 public class PartieDAO {
     
        public List<Partie> listerPartiesNonDemarrees(){
+           
            EntityManager em =  Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
            
-           Query query = em.createQuery("SELECT p FROM Partie p WHERE p.id GROUP BY ");
+           Query query = em.createQuery("SELECT p "
+                   + "FROM Partie p "
+                   + "EXCEPT"
+                   + "SELECT p2.id"
+                   + "FROM Partie p2"
+                   + "     JOIN p.joueurs j"
+                   + "WHERE j.etat=:etat_gagne"
+                   + "EXCEPT"
+                   + "SELECT p"
+                   + "FROM Partie p"
+                   + "     JOIN p.joueurs j"
+                   + "WHERE j.etat=:etat_alamain"
+                   );
            
+           query.setParameter("etat_gagne", Joueur.EtatJoueur.GAGNE);
+           query.setParameter("etat_alamain", Joueur.EtatJoueur.A_LA_MAIN);
+                   
            return query.getResultList();
        }
+       
+       public void ajouterPartie(Partie p){
+           
+         EntityManager em =  Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+         
+         em.getTransaction().begin();
+         
+         em.persist(p);
+         
+         em.getTransaction().commit();
+       }
+
+    public Partie rechercherParId(long idPartie) {
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        
+        // on peut faire seulement un find si l'on a juste besoin de la clé primaire
+        return em.find(Partie.class, idPartie);
+    }
+       
+       
 }

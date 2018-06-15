@@ -35,6 +35,14 @@ public class Partie implements Serializable {
     @Column (nullable = false)
     private String nom;
 
+    public List<Joueur> getJoueurs() {
+        return joueurs;
+    }
+
+    public void setJoueurs(List<Joueur> joueurs) {
+        this.joueurs = joueurs;
+    }
+
     public String getNom() {
         return nom;
     }

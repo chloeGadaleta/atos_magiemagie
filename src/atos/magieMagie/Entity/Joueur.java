@@ -35,11 +35,14 @@ public class Joueur implements Serializable {
         A_LA_MAIN,
         N_A_PAS_LA_MAIN,
         SOMMEIL_PROFOND,
-        PERDU
+        PERDU,
+        GAGNE
+        
     }
     
     
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EtatJoueur etatJoueur;
     
     @Column (unique = true)
@@ -53,6 +56,43 @@ public class Joueur implements Serializable {
     
     @Column (nullable = false)
     private Long nbrPartiesJouees;
+    
+    @Column(nullable = false)
+    private Long ordre;
+    
+    @ManyToOne
+    @JoinColumn
+    private Partie partie;
+    
+    @OneToMany (mappedBy = "joueur")
+    private List<Carte> cartes = new ArrayList<>();
+
+    
+    
+    
+    public Long getOrdre() {
+        return ordre;
+    }
+
+    public void setOrdre(Long ordre) {
+        this.ordre = ordre;
+    }
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
+    }
+
+    public List<Carte> getCartes() {
+        return cartes;
+    }
+
+    public void setCartes(List<Carte> cartes) {
+        this.cartes = cartes;
+    }
 
     public EtatJoueur getEtatJoueur() {
         return etatJoueur;
@@ -94,14 +134,6 @@ public class Joueur implements Serializable {
         this.nbrPartiesJouees = nbrPartiesJouees;
     }
 
-    
-    @ManyToOne
-    @JoinColumn
-    private Partie partie;
-    
-    @OneToMany (mappedBy = "joueur")
-    private List<Carte> cartes = new ArrayList<>();
-            
     public Long getId() {
         return id;
     }

@@ -8,6 +8,7 @@ package atos.magieMagie.Entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -56,6 +57,7 @@ public class Carte implements Serializable {
     }
     
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TypeIngredient typeIngredient;
     
 

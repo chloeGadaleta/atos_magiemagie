@@ -23,13 +23,22 @@ public class PartieService {
        return dao.listerPartiesNonDemarrees();
    }
    
-   public Partie creerNouvellePartie(long idJoueur , String nomPartie){
-    
-        return new Partie();
-    }
-   
-   public Partie demarrerPartie(long idPartie, long idJoueur)(){
+   public Partie creerNouvellePartie(String nom){
        
-       return null;
-   }
+       // on crée la classe
+       Partie p = new Partie();
+       p.setNom(nom);
+       dao.ajouterPartie(p);
+       
+       return p;
+       
+       
+    }
+//   
+//   public Partie demarrerPartie(long idPartie, long idJoueur)(){
+//       
+//       Partie p = dao.rechercherParId(idPartie);
+//       
+//   }
+   
 }
