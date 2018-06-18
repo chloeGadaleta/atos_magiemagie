@@ -5,6 +5,7 @@
  */
 package atos.magieMagie.Dao;
 
+import atos.magieMagie.Entity.Carte_;
 import atos.magieMagie.Entity.Joueur;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,6 +23,17 @@ public class JoueurDAO {
      * @param pseudo
      * @return 
      */
+    
+    public void majJoueur(Joueur joueur){
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        
+        em.getTransaction().begin();
+        em.merge(joueur);
+        em.getTransaction().commit();
+    
+    }
+    
     
     // recherche si joueur existe par pseudo
     public Joueur rechercherParPseudo(String pseudo){

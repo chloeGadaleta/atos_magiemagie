@@ -93,5 +93,13 @@ public class Carte implements Serializable {
     public String toString() {
         return "atos.magieMagie.Entity.Carte[ id=" + id + " ]";
     }
+
+    public Joueur getJoueur() {
+        return joueur;
+    }
+
+    public void setJoueur(Joueur joueur) {
+        this.joueur = joueur;
+    }
     
 }

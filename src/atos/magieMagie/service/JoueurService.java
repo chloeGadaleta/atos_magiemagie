@@ -22,7 +22,7 @@ public class JoueurService {
     private PartieDAO partiedao = new PartieDAO();
     
     
-    public void rejoindrePartie(String pseudo, String avatar, long idPartie){
+    public Joueur rejoindrePartie(String pseudo, String avatar, long idPartie){
         
         
         // recherche si le joueur existe déjà
@@ -44,11 +44,11 @@ public class JoueurService {
         long ordre = dao.rechercheOrdreNouveauJoueurPourPartieIs(idPartie);
         joueur.setOrdre(ordre);
 //        
-//        // reccupérer la partie
+//      // reccupérer la partie
         Partie partie = partiedao.rechercherParId(idPartie);
 
 //        
-//        // maintenant qu'on a reccup la partie il faut associer le joueur à la partie
+//      // maintenant qu'on a reccup la partie il faut associer le joueur à la partie
          joueur.setPartie(partie);
         partie.getJoueurs();
         List<Joueur> listeJoueurs = partie.getJoueurs();
@@ -62,6 +62,11 @@ public class JoueurService {
         
 //        
 //        
+        return joueur;
+    }
+    
+      private void afficherCartesJoueur(Joueur joueur){
+        
     }
     
     
