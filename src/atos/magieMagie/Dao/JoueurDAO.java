@@ -24,6 +24,24 @@ public class JoueurDAO {
      * @return 
      */
     
+    public List<Joueur> listerJoueursEtNombreCartes(long idJoueur, long idCarte){
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        
+        Query query = em.createQuery("SELECT j "
+                + "                   FROM Joueur j"
+                + "                   WHERE joueur.id=: id_joueur"
+                + "                   EXCEPT"
+                + "                   SELECT COUNT(c)"
+                + "                   FROM Carte c"
+                + "                   WHERE j.carte.id=:id_carte"
+        );
+        
+        query.setParameter("id_partie", idCarte);
+        query.setParameter("id_joueur", idJoueur);
+        return query.getResultList();
+    }
+    
     public void majJoueur(Joueur joueur){
         
         EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
@@ -67,20 +85,21 @@ public class JoueurDAO {
 //                + "     JOIN j.partie p"
 //                + "WHERE j.id =:idPartie"
 //                );
-             Query query = em.createQuery("select Max(j.ordre)+1 from Joueur j join j.partie p where j.id =:idPartie ");
+             Query query = em.createQuery("select Max(j.ordre) from Joueur j join j.partie p where p.id =:idPartie ");
         
         query.setParameter("idPartie", partieId);
         Object res = query.getSingleResult();
         if (res == null) {
-            return 1;
+            return 0;
         }
-        return (long) res;
+        return (long) res+1;
     } 
 
 
     public void ajouter(Joueur joueur) {
         
-           EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+          
            em.getTransaction().begin();
            
            em.persist(joueur);
@@ -91,8 +110,13 @@ public class JoueurDAO {
     
     public void modifier(Joueur joueur) {
         
-//        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
-        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+          
+            em.getTransaction().begin();
+           
+            em.merge(joueur);
+           
+            em.getTransaction().commit();
         
     }
 }

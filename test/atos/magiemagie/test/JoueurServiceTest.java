@@ -9,6 +9,7 @@ import atos.magieMagie.Entity.Joueur;
 import atos.magieMagie.Entity.Partie;
 import atos.magieMagie.service.JoueurService;
 import atos.magieMagie.service.PartieService;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -21,6 +22,11 @@ public class JoueurServiceTest {
   private JoueurService joueurService = new JoueurService();
   private PartieService partieService = new PartieService();
    
+  @Test
+  public void listerJoueurEtNbrCarteOK(){
+      
+  }
+  
   @Test 
   public void ordreJoueurOK(){
       

@@ -5,6 +5,7 @@
  */
 package atos.magieMagie.service;
 
+import atos.magieMagie.Dao.CarteDAO;
 import atos.magieMagie.Dao.JoueurDAO;
 import atos.magieMagie.Dao.PartieDAO;
 import atos.magieMagie.Entity.Carte;
@@ -22,6 +23,8 @@ public class PartieService {
    
     
    private  PartieDAO partiedao = new PartieDAO();
+   private  JoueurDAO joueurdao = new JoueurDAO();
+   private CarteDAO carteDao=new CarteDAO();
    
    
     /**
@@ -58,10 +61,10 @@ public class PartieService {
        
       // On passe le joueur d'ordre 0 à l'état A_LA_MAIN
       // Faire boucle et ajouter en base
-      
-       for (Joueur joueur : p.getJoueurs()) {
-           if (joueur.getOrdre()==0) {
+       for (Joueur joueur : p.getJoueurs()) {         
+           if (joueur.getOrdre()==0) {  
                joueur.setEtatJoueur(Joueur.EtatJoueur.A_LA_MAIN);
+               joueurdao.modifier(joueur);
            }
        }
        
@@ -71,23 +74,21 @@ public class PartieService {
                Carte carte = nouvelleCarte();
                joueur.getCartes().add(nouvelleCarte());
                carte.setJoueur(joueur);
+               carteDao.majCarte(carte);
            }
        }
    }
     
-   // tirage au hasard des cartes de 1 à 5 ingrédients
-    private Carte nouvelleCarte() {
-        
-       TypeIngredient[] tabTypeIngredients = TypeIngredient.values();
-        
-       Random r = new Random();
-       int n  = r.nextInt(tabTypeIngredients.length);
-       
-       Carte carte = new Carte();
-       carte.setTypeIngredient(tabTypeIngredients[n]);
-       return carte;
-    }
-    
-  
-   
+        // tirage au hasard des cartes de 1 à 5 ingrédients
+         private Carte nouvelleCarte() {
+
+            TypeIngredient[] tabTypeIngredients = TypeIngredient.values();
+
+            Random r = new Random();
+            int n  = r.nextInt(tabTypeIngredients.length);
+
+            Carte carte = new Carte();
+            carte.setTypeIngredient(tabTypeIngredients[n]);
+            return carte;
+         }
 }

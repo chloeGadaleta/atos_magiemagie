@@ -20,7 +20,16 @@ public class PartieServiceTest {
     private PartieService partieService = new PartieService();
     private JoueurService joueurService = new JoueurService();
 
-    @Test
+    //@Test 
+    public void rejoindrePartieOk(){
+        
+
+        joueurService.rejoindrePartie("Chloé", "gadaleta", 1);
+        joueurService.rejoindrePartie("Anouck", "gadaleta", 1);
+        joueurService.rejoindrePartie("Chantal", "gadaleta", 1);
+    }
+    
+//    @Test
     public void creerNouvellePartieOK() {
 
         Partie p = partieService.creerNouvellePartie("partie 1");
@@ -31,13 +40,7 @@ public class PartieServiceTest {
     @Test
     public void demarrerPartieOK() {
 
-        Partie p = partieService.creerNouvellePartie("test1");
-        
-        joueurService.rejoindrePartie("Chloé", "gadaleta", p.getId());
-        joueurService.rejoindrePartie("Anouck", "gadaleta", p.getId());
-        joueurService.rejoindrePartie("Chantal", "gadaleta", p.getId());
-        
-        partieService.demarrerPartie(p.getId());
+        partieService.demarrerPartie(1);
         
        
     }

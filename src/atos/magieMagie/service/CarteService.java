@@ -5,6 +5,8 @@
  */
 package atos.magieMagie.service;
 
+import atos.magieMagie.Dao.CarteDAO;
+import atos.magieMagie.Dao.JoueurDAO;
 import atos.magieMagie.Entity.Carte;
 import java.util.List;
 
@@ -14,7 +16,15 @@ import java.util.List;
  */
 public class CarteService {
     
+    // recherche joueur par id
+    private CarteDAO cartedao = new CarteDAO();
+    private JoueurDAO joueurDao = new JoueurDAO();
+    private CarteDAO carteDAO = new CarteDAO();
+    
     public List<Carte> listerCartesJoueur(long idJoueur){
-     return null;   
+       
+          return cartedao.listerCartesJoueur(idJoueur);   
     }
+
 }
+

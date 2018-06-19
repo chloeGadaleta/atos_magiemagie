@@ -5,8 +5,10 @@
  */
 package atos.magieMagie.service;
 
+import atos.magieMagie.Dao.CarteDAO;
 import atos.magieMagie.Dao.JoueurDAO;
 import atos.magieMagie.Dao.PartieDAO;
+import atos.magieMagie.Entity.Carte_;
 import atos.magieMagie.Entity.Joueur;
 import atos.magieMagie.Entity.Partie;
 import java.util.List;
@@ -18,15 +20,16 @@ import java.util.List;
 public class JoueurService {
     
     
-    private JoueurDAO dao = new JoueurDAO();
+    private JoueurDAO joueurDao = new JoueurDAO();
     private PartieDAO partiedao = new PartieDAO();
+    private CarteDAO carteDAO = new  CarteDAO();
     
     
     public Joueur rejoindrePartie(String pseudo, String avatar, long idPartie){
         
         
         // recherche si le joueur existe déjà
-        Joueur joueur = dao.rechercherParPseudo(pseudo);
+        Joueur joueur = joueurDao.rechercherParPseudo(pseudo);
         if (joueur == null) {
             // joueur n'existe pas encore donc je l'instancie
             
@@ -41,7 +44,7 @@ public class JoueurService {
         
         // la partie n'a pas encore démarrée donc aucun joueur n'a la main
         joueur.setEtatJoueur(Joueur.EtatJoueur.N_A_PAS_LA_MAIN);
-        long ordre = dao.rechercheOrdreNouveauJoueurPourPartieIs(idPartie);
+        long ordre = joueurDao.rechercheOrdreNouveauJoueurPourPartieIs(idPartie);
         joueur.setOrdre(ordre);
 //        
 //      // reccupérer la partie
@@ -55,20 +58,17 @@ public class JoueurService {
         listeJoueurs.add(joueur);
         
         if(joueur.getId()==null){ //nouveau
-            dao.ajouter(joueur);
+            joueurDao.ajouter(joueur);
         }else{
-            dao.modifier(joueur);
+            joueurDao.modifier(joueur);
         }
         
-//        
-//        
         return joueur;
     }
     
-      private void afficherCartesJoueur(Joueur joueur){
+      private List<Joueur> listerJoueursEtNombreCartes(){
+      
+        return listerJoueursEtNombreCartes();
         
     }
-    
-    
-   
 }
