@@ -24,20 +24,16 @@ public class JoueurDAO {
      * @return 
      */
     
-    public List<Joueur> listerJoueursEtNombreCartes(long idJoueur, long idCarte){
+    public List<Joueur> listerJoueursEtNombreCartes(long idJoueur){
         
         EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
         
-        Query query = em.createQuery("SELECT j "
-                + "                   FROM Joueur j"
-                + "                   WHERE joueur.id=: id_joueur"
-                + "                   EXCEPT"
-                + "                   SELECT COUNT(c)"
-                + "                   FROM Carte c"
-                + "                   WHERE j.carte.id=:id_carte"
-        );
+        Query query = em.createQuery("SELECT joueur.pseudo, COUNT(c.joueur_id) "
+                + "                   FROM Carte c "
+                + "                   WHERE c.joueur_id=:joueur_id"
+                + "                   GROUP BY carte.joueur_id"
+                );
         
-        query.setParameter("id_partie", idCarte);
         query.setParameter("id_joueur", idJoueur);
         return query.getResultList();
     }

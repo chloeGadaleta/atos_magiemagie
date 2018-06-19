@@ -5,8 +5,11 @@
  */
 package atos.magiemagie.test;
 
+import atos.magieMagie.Dao.JoueurDAO;
+import atos.magieMagie.Entity.Carte_;
 import atos.magieMagie.Entity.Joueur;
 import atos.magieMagie.Entity.Partie;
+import atos.magieMagie.service.CarteService;
 import atos.magieMagie.service.JoueurService;
 import atos.magieMagie.service.PartieService;
 import java.util.List;
@@ -21,13 +24,15 @@ public class JoueurServiceTest {
     
   private JoueurService joueurService = new JoueurService();
   private PartieService partieService = new PartieService();
-   
+  private JoueurDAO joueurDao = new JoueurDAO();
+  
   @Test
   public void listerJoueurEtNbrCarteOK(){
-      
+      List<Joueur> j = joueurDao.listerJoueursEtNombreCartes(0,0);
+      assertEquals(j, j.size());
   }
   
-  @Test 
+  //@Test 
   public void ordreJoueurOK(){
       
      Partie nouvellePartie = partieService.creerNouvellePartie("ordreJoueurOk");
@@ -41,7 +46,7 @@ public class JoueurServiceTest {
       
   }
   
-  @Test 
+  //@Test 
     public void rejoindreServiceOK(){
        
         // il renvoie une entité partie

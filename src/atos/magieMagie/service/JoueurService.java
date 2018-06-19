@@ -66,7 +66,7 @@ public class JoueurService {
         return joueur;
     }
     
-      private List<Joueur> listerJoueursEtNombreCartes(){
+    private List<Joueur> listerJoueursEtNombreCartes(){
       
         return listerJoueursEtNombreCartes();
         
