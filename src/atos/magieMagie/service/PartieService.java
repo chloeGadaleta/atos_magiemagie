@@ -32,6 +32,69 @@ public class PartieService {
      * ou GAGNE
      * @return 
      */
+  
+   public void passeJoueurSuivant(long idPartie){
+        
+        // Réccuper id du joueur que à la main
+        Joueur joueurQuiALaMain = joueurdao.rechercherJoueurQuiALaMainParPartieId(idPartie);
+        
+        
+        //Determine si tous les autres joueurs ont perdus
+        //et passe le joueur à l'état gagné si c'est le cas puis quitte la fonction
+        
+        // pas besoin d'écrire true et else.. cela se fait automatiquement
+        if(joueurdao.determineSiPlusQueUnJoueurDansPartie(idPartie)){
+            
+            joueurQuiALaMain.setEtatJoueur(Joueur.EtatJoueur.GAGNE);
+            joueurdao.modifier(joueurQuiALaMain);
+            return;
+            // return pour interompre la fonction
+        }
+        
+        // (si j'arrive ici ) La partie n'est pas terminée donc joueur à gagné
+        
+        // sinon on continue 
+        //Recupère l'ordre max des joueurs de la partie
+        long ordreMax = partiedao.rechercheOrdreMaxJoueurPourPartieId(idPartie);
+        
+        //joueurEvalue = joueurQuiALaMain
+        Joueur joueurEvalue = joueurQuiALaMain;
+        
+        while(true){// c'est ma boucle qui permer de déterminer le joueur qui 'attrape' la main
+            
+            //Si joueurEvalue est le dernier joueur alors on evalue le premier
+            if(joueurEvalue.getOrdre()>=ordreMax){
+               joueurEvalue=joueurdao.rechercheJoueurParPartieIdEtOrdre(idPartie, 0L); 
+            }else{
+                joueurEvalue = joueurdao.rechercheJoueurParPartieIdEtOrdre(idPartie,joueurEvalue.getOrdre()+1);
+            }
+            
+            //Si tous les joueurs non éliminés étaient en sommeil profond ( et qu'on l'a juste reveillé)
+            if (joueurEvalue.getId()==joueurQuiALaMain.getId())
+                return;
+            // si joueur évalué en sommeil profond alors son état passe à pas la main
+            
+            if (joueurEvalue.getEtatJoueur()==Joueur.EtatJoueur.SOMMEIL_PROFOND) {
+                joueurEvalue.setEtatJoueur(Joueur.EtatJoueur.N_A_PAS_LA_MAIN);
+                joueurdao.modifier(joueurEvalue);
+            }else{
+                // N'était pas en sommeil profon
+                
+                // SI joueurEvalue à pas la main ? Alors c'est lui qui prend la main 
+                
+                if(joueurEvalue.getEtatJoueur()==Joueur.EtatJoueur.N_A_PAS_LA_MAIN)
+                   joueurQuiALaMain.setEtatJoueur(Joueur.EtatJoueur.N_A_PAS_LA_MAIN);
+                   joueurdao.modifier(joueurQuiALaMain);
+                   
+                   joueurEvalue.setEtatJoueur(Joueur.EtatJoueur.A_LA_MAIN);
+                   joueurdao.modifier(joueurEvalue);
+                   
+                   return;
+            }
+        }
+        
+   }
+   
    public List<Partie> listerPartiesNonDemarrees(){
        
        return partiedao.listerPartiesNonDemarrees();

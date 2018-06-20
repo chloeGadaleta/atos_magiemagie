@@ -18,6 +18,22 @@ import javax.persistence.Query;
  */
 public class PartieDAO {
     
+    
+    
+   public long rechercheOrdreMaxJoueurPourPartieId(long partieId){
+       
+       EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+       
+       Query query = em.createQuery("SELECT MAX(j.ordre)"
+               + "                   FROM Joueur j "
+               + "                        JOIN j.partie p"
+               + "                   WHERE p.id=:id"
+               );
+       
+       query.setParameter("id", partieId);
+       return (Long) query.getSingleResult();
+   } 
+    
    public Long compterJoueurPartie(long idPartie){
        
        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
@@ -37,17 +53,17 @@ public class PartieDAO {
         EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
 
         Query query = em.createQuery("SELECT p "
-                + "FROM Partie p "
-                + "EXCEPT"
-                + "SELECT p2.id"
-                + "FROM Partie p2"
-                + "     JOIN p.joueurs j"
-                + "WHERE j.etat=:etat_gagne"
-                + "EXCEPT"
-                + "SELECT p"
-                + "FROM Partie p"
-                + "     JOIN p.joueurs j"
-                + "WHERE j.etat=:etat_alamain"
+                + "                   FROM Partie p "
+                + "                   EXCEPT "
+                + "                   SELECT p "
+                + "                   FROM Partie p "
+                + "                        JOIN p.joueurs j "
+                + "                   WHERE j.etatJoueur=:etat_gagne "
+                + "                   EXCEPT "
+                + "                   SELECT p "
+                + "                   FROM Partie p "
+                + "                        JOIN p.joueurs j "
+                + "                   WHERE j.etatJoueur=:etat_alamain "
         );
 
         query.setParameter("etat_gagne", Joueur.EtatJoueur.GAGNE);

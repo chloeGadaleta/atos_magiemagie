@@ -25,6 +25,9 @@ public class JoueurService {
     private CarteDAO carteDAO = new  CarteDAO();
     
     
+    
+    
+    
     public Joueur rejoindrePartie(String pseudo, String avatar, long idPartie){
         
         
@@ -66,9 +69,11 @@ public class JoueurService {
         return joueur;
     }
     
-    private List<Joueur> listerJoueursEtNombreCartes(){
-      
-        return listerJoueursEtNombreCartes();
-        
-    }
+//    private List<Joueur> listerJoueursEtNombreCartes(){
+//      
+//        tabjoueurEtCarte [] = {};
+//                
+//        return listerJoueursEtNombreCartes();
+//        
+//    }
 }

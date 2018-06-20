@@ -26,11 +26,11 @@ public class JoueurServiceTest {
   private PartieService partieService = new PartieService();
   private JoueurDAO joueurDao = new JoueurDAO();
   
-  @Test
-  public void listerJoueurEtNbrCarteOK(){
-      List<Joueur> j = joueurDao.listerJoueursEtNombreCartes(0,0);
-      assertEquals(j, j.size());
-  }
+//  @Test
+//  public void listerJoueurEtNbrCarteOK(){
+//      List<Joueur> j = joueurDao.listerJoueursEtNombreCartes(0,0);
+//      assertEquals(j, j.size());
+//  }
   
   //@Test 
   public void ordreJoueurOK(){

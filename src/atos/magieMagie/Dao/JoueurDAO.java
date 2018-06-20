@@ -24,19 +24,86 @@ public class JoueurDAO {
      * @return 
      */
     
-    public List<Joueur> listerJoueursEtNombreCartes(long idJoueur){
+//    public List<Joueur> listerJoueursEtNombreCartes(long idJoueur){
+//        
+//        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+//        
+//        Query query = em.createQuery("SELECT joueur.pseudo, COUNT(c.joueur_id) "
+//                + "                   FROM Carte c "
+//                + "                   WHERE c.joueur_id=:joueur_id"
+//                + "                   GROUP BY carte.joueur_id"
+//                );
+//        
+//        query.setParameter("id_joueur", idJoueur);
+//        return query.getResultList();
+//    }
+    
+    // remplacé long l par long ordre
+    public Joueur rechercheJoueurParPartieIdEtOrdre(long idPartie, long ordre) {
         
         EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
         
-        Query query = em.createQuery("SELECT joueur.pseudo, COUNT(c.joueur_id) "
-                + "                   FROM Carte c "
-                + "                   WHERE c.joueur_id=:joueur_id"
-                + "                   GROUP BY carte.joueur_id"
+        Query query = em.createQuery("SELECT j "
+                + "                   FROM Joueur j"
+                + "                        JOIN j.partie p"
+                + "                   WHERE p.id=:id_partie"
+                + "                   AND j.ordre=:ordre_joueur"
                 );
         
-        query.setParameter("id_joueur", idJoueur);
-        return query.getResultList();
+        query.setParameter("ordre_joueur", ordre);
+        query.setParameter("id_partie", idPartie);
+        
+        return (Joueur) query.getSingleResult();
     }
+    
+    public boolean determineSiPlusQueUnJoueurDansPartie( long partieId){
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+
+        Query query = em.createQuery("SELECT j "
+                + "                   FROM Joueur j"
+                + "                        JOIN j.partie p"
+                + "                   WHERE p.id=:id_partie"
+                + "                   EXCEPT"
+                + "                   SELECT j "
+                + "                   FROM Joueur j"
+                + "                        JOIN j.partie p"
+                + "                   WHERE p.id=:id_partie"
+                + "                   AND j.etat=:etat_perdu"
+                );
+        
+        query.setParameter("etat_perdu", Joueur.EtatJoueur.PERDU);
+        query.setParameter("id_partie", partieId);
+        
+        List res = query.getResultList();
+        
+        
+        // ou return res.size()==1;
+        if (res.size()== 1)
+            return true;
+        else
+            return false;
+                   
+        
+        
+    }
+    
+    public Joueur rechercherJoueurQuiALaMainParPartieId(long idPartie){
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        
+        Query query = em.createQuery("SELECT j "
+                + "                   FROM Joueur j"
+                + "                        JOIN j.partie p "
+                + "                   WHERE j.etat=:etat_alamain"
+                + "                   AND p.id=:id_partie"
+                );
+        query.setParameter("etat_alamain", Joueur.EtatJoueur.A_LA_MAIN);
+        query.setParameter("id_partie", idPartie);
+        
+        return (Joueur) query.getSingleResult();
+    }
+    
     
     public void majJoueur(Joueur joueur){
         
@@ -115,4 +182,6 @@ public class JoueurDAO {
             em.getTransaction().commit();
         
     }
+
+    
 }
