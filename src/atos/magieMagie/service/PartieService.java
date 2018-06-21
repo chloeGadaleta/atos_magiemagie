@@ -32,7 +32,35 @@ public class PartieService {
      * ou GAGNE
      * @return 
      */
-  
+   
+   public void lancerUnSort(long idJoueur){
+       
+            
+       
+       
+   }
+   
+   
+    public void piocher(long idJoueur){
+        
+        // Le joueur pioche une carte
+        
+        Joueur joueur = joueurdao.rechercheJoueurParId(idJoueur);
+        
+        Carte carte = nouvelleCarte();
+        
+        // on lie la carte au joueur
+        carte.setJoueur(joueur);
+        // on ajoute cette carte à sa liste de carte
+        joueur.getCartes().add(nouvelleCarte());
+        
+        carteDao.majCarte(carte);
+        joueurdao.modifier(joueur);
+        
+    }
+   
+   
+   
    public void passeJoueurSuivant(long idPartie){
         
         // Réccuper id du joueur que à la main

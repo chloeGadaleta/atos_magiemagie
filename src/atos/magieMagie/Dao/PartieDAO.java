@@ -18,8 +18,6 @@ import javax.persistence.Query;
  */
 public class PartieDAO {
     
-    
-    
    public long rechercheOrdreMaxJoueurPourPartieId(long partieId){
        
        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
@@ -90,5 +88,19 @@ public class PartieDAO {
         // on peut faire seulement un find si l'on a juste besoin de la clé primaire
         return em.find(Partie.class, idPartie);
     }
+
+    public void modifier(Partie partie) {
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+
+        em.getTransaction().begin();
+
+        em.merge(partie);
+
+        em.getTransaction().commit();
+    }
+
+  
+
+    
 
 }

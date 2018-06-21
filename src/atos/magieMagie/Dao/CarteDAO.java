@@ -23,7 +23,8 @@ public class CarteDAO {
         
         Query query = em.createQuery("SELECT c"
                 + "                   FROM Carte c"
-                + "                   WHERE c.joueur.id =:id_joueur "
+                + "                        JOIN c.joueur j"
+                + "                   WHERE j.id =:id_joueur "
                 );
         
         query.setParameter("id_joueur", idJoueur);

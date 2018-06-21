@@ -37,12 +37,14 @@ public class PartieServiceTest {
 
     }
     
-    @Test
+    // @Test
     public void demarrerPartieOK() {
 
         partieService.demarrerPartie(1);
-        
-       
     }
-
+    
+    @Test
+    public void piocherCarteOk(){
+        partieService.piocher(13L);
+    }
 }

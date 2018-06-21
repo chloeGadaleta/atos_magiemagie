@@ -5,8 +5,10 @@
  */
 package atos.magieMagie.Dao;
 
+import atos.magieMagie.Entity.Carte;
 import atos.magieMagie.Entity.Carte_;
 import atos.magieMagie.Entity.Joueur;
+import com.sun.xml.internal.ws.server.sei.SEIInvokerTube;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -24,19 +26,47 @@ public class JoueurDAO {
      * @return 
      */
     
-//    public List<Joueur> listerJoueursEtNombreCartes(long idJoueur){
-//        
-//        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
-//        
-//        Query query = em.createQuery("SELECT joueur.pseudo, COUNT(c.joueur_id) "
-//                + "                   FROM Carte c "
-//                + "                   WHERE c.joueur_id=:joueur_id"
-//                + "                   GROUP BY carte.joueur_id"
-//                );
-//        
-//        query.setParameter("id_joueur", idJoueur);
-//        return query.getResultList();
-//    }
+    public Joueur rechercheJoueurParId(long id){
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        
+        return em.find(Joueur.class, id);
+        
+         
+    }
+    
+    public Long reccupIdJoueurMain(long idPartie) {
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        Query query = em.createQuery("SELECT j.id "
+                + "                   FROM Joueur j "
+                + "                        JOIN j.partie p"
+                + "                   WHERE j.etatJoueur=:etat_alamain"
+                + "                   AND p.id=:partie_id"
+                );
+        
+        query.setParameter("etat_alamain", Joueur.EtatJoueur.A_LA_MAIN);
+        query.setParameter("partie_id", idPartie);
+        return (Long) query.getSingleResult();
+    
+    }
+    
+    
+    public List<Object[]> listerJoueursEtNombreCartes(long idPartie){
+        
+        EntityManager em = Persistence.createEntityManagerFactory("MagieMagiePU").createEntityManager();
+        
+        Query query = em.createQuery("SELECT j.id, j.pseudo, COUNT(c.joueur) "
+                + "                   FROM Carte c"
+                + "                        JOIN c.joueur j "
+                + "                        JOIN j.partie p"
+                + "                   WHERE p.id=:id_partie"
+                + "                   GROUP BY c.joueur"
+                );
+        
+        query.setParameter("id_partie", idPartie);
+        return (List<Object[]>) query.getResultList();
+    }
     
     // remplacé long l par long ordre
     public Joueur rechercheJoueurParPartieIdEtOrdre(long idPartie, long ordre) {
@@ -182,6 +212,8 @@ public class JoueurDAO {
             em.getTransaction().commit();
         
     }
+
+   
 
     
 }

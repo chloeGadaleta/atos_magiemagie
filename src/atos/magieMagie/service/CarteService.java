@@ -8,6 +8,7 @@ package atos.magieMagie.service;
 import atos.magieMagie.Dao.CarteDAO;
 import atos.magieMagie.Dao.JoueurDAO;
 import atos.magieMagie.Entity.Carte;
+import atos.magieMagie.Entity.Joueur;
 import java.util.List;
 
 /**
@@ -23,8 +24,7 @@ public class CarteService {
     
     public List<Carte> listerCartesJoueur(long idJoueur){
        
-          return cartedao.listerCartesJoueur(idJoueur);   
+          return cartedao.listerCartesJoueur(idJoueur);
     }
-
 }
 

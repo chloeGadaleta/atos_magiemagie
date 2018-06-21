@@ -56,6 +56,18 @@ public class JoueurServiceTest {
         
   }
     
+    //@Test
+    public void nbrCarteParJoueurOK(){
+        
+        joueurService.listerJoueursEtNombreCartes(18L);
+    }
+    
+    @Test
+    public void reccupererIdJoueurQuiALaMainOK(){
+        
+        joueurService.réccupérerIdJoueurQuiALaMain(1);
+    }
+    
   
     
 }

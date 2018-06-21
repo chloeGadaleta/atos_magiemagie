@@ -24,9 +24,11 @@ public class JoueurService {
     private PartieDAO partiedao = new PartieDAO();
     private CarteDAO carteDAO = new  CarteDAO();
     
+   
     
-    
-    
+    public Long réccupérerIdJoueurQuiALaMain(long idPartie){
+        return joueurDao.reccupIdJoueurMain(idPartie);
+    }
     
     public Joueur rejoindrePartie(String pseudo, String avatar, long idPartie){
         
@@ -66,14 +68,15 @@ public class JoueurService {
             joueurDao.modifier(joueur);
         }
         
+        partiedao.modifier(partie);
+        
         return joueur;
     }
     
-//    private List<Joueur> listerJoueursEtNombreCartes(){
-//      
-//        tabjoueurEtCarte [] = {};
-//                
-//        return listerJoueursEtNombreCartes();
-//        
-//    }
+    public List<Object[]> listerJoueursEtNombreCartes(long idPartie){
+      
+        return joueurDao.listerJoueursEtNombreCartes(idPartie);
+    }
+    
+    
 }
